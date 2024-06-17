@@ -1,0 +1,16 @@
+name: Reusable Print Message
+
+on:
+  workflow_call:
+    inputs:
+      message:
+        required: true
+        type: string
+
+jobs:
+  print-message:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Print message
+        run: echo "Hi, this message is from primary workflow"

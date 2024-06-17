@@ -1,7 +1,7 @@
 
 
 # Set the GitHub PAT
-$token = "ghp_pat_11BIL66PY0t5yp6kTNN8wq_sHhJXnvsJDXu90J18AQpls2PvfQl5OVXqyvzyng0XNHNS7GHSKCBIWvjZjlc"
+$token = "ghp_pat_11BIL66PY0t5yp6kTNN8wq_sHhJXnvsJDXu90J18AQpls2PvfQl5OVXTESTxxxxxxvjZjlc"
 
 # Set the repository details
 $owner = "github-cloudlabsuser-2428"

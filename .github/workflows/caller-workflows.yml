@@ -9,4 +9,4 @@ jobs:
   call-reusable-workflow:
     uses: ./.github/workflows/reusable-print-message.yml
     with:
-      message: "Hello from the caller workflow!"c
+      message: "Hello from the caller workflow!"

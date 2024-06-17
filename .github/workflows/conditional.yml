@@ -1,0 +1,22 @@
+name: Complex Workflow
+
+on: [push, pull_request]
+
+jobs:
+  job1:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+    - name: Run a one-line script
+      run: echo Hello, world!
+
+  job2:
+    needs: job1
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' && success()
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+    - name: Run a different one-line script
+      run: echo Hello again, world!

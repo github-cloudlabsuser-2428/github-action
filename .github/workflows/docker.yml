@@ -1,0 +1,40 @@
+name: Build and Push Docker Image to ACR
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+
+    steps:
+    # Checkout the repository
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    # Log in to Azure
+    - name: Log in to Azure CLI
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+    # List files in the current directory
+    - name: List files
+      run: ls -la
+
+    # Build Docker image
+    - name: Build Docker image
+      run: |
+        docker buildx build . -t gacontainer1375886.azurecr.io/my-app:latest
+
+    # Log in to Azure Container Registry
+    - name: Log in to Azure Container Registry
+      run: |
+        az acr login --name gacontainer1375886
+
+    # Push Docker image to Azure Container Registry
+    - name: Push Docker image
+      run: |
+        docker push gacontainer1375886.azurecr.io/my-app:latest

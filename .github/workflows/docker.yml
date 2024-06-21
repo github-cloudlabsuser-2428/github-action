@@ -17,41 +17,34 @@ on:
 
 jobs:
   build-and-push:
-    environment: action-environment
     runs-on: ubuntu-latest
 
     steps:
-    # Checkout the repository
+    # Step to checkout the repository
     - name: Checkout repository
       uses: actions/checkout@v2
 
-    # Log in to Azure
+    # Step to log in to Azure using the Azure CLI GitHub Action
     - name: Log in to Azure CLI
       uses: azure/login@v1
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-    # List files in the current directory
+    # Step to list files in the current directory
     - name: List files
       run: ls -la
 
-    # Build Docker image
+    # Step to build the Docker image
     - name: Build Docker image
-      env: 
-        LOGIN_SERVER: ${{ vars.LOGIN_SERVER }}
       run: |
         docker buildx build . -t $LOGIN_SERVER/my-app:latest
 
-    # Log in to Azure Container Registry
+    # Step to log in to Azure Container Registry
     - name: Log in to Azure Container Registry
-      env:
-        REGISTRY_NAME: ${{ vars.REGISTRY_NAME }}
       run: |
         az acr login --name $REGISTRY_NAME
 
-    # Push Docker image to Azure Container Registry
+    # Step to push the Docker image to Azure Container Registry
     - name: Push Docker image
-      env:
-        LOGIN_SERVER: ${{ vars.LOGIN_SERVER }}
       run: |
         docker push $LOGIN_SERVER/my-app:latest

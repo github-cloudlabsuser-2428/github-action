@@ -1,5 +1,5 @@
 # This is the configuration for our GitHub Actions workflow to build and push a Docker image to Azure Container Registry (ACR).
-# The workflow is triggered on push events targeting the main branch.
+# The workflow is triggered on push events targeting the main branch. 
 name: Build and Push Docker Image to ACR
 
 on:

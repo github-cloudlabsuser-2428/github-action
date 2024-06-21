@@ -7,7 +7,7 @@ on:
 
 jobs:
   build-and-push:
-    environment: action-environment
+    environment: action environment
     runs-on: ubuntu-latest
 
     steps:

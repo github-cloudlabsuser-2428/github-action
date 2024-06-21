@@ -37,14 +37,14 @@ jobs:
     # Step to build the Docker image
     - name: Build Docker image
       run: |
-        docker buildx build . -t $LOGIN_SERVER/my-app:latest
+        docker buildx build . -t gacontainer1375886.azurecr.io/my-app:latest
 
     # Step to log in to Azure Container Registry
     - name: Log in to Azure Container Registry
       run: |
-        az acr login --name $REGISTRY_NAME
+        az acr login --name gacontainer1375886
 
     # Step to push the Docker image to Azure Container Registry
     - name: Push Docker image
       run: |
-        docker push $LOGIN_SERVER/my-app:latest
+        docker push gacontainer1375886.azurecr.io/my-app:latest

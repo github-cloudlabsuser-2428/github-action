@@ -1,39 +1,47 @@
-# This is the configuration for our GitHub Actions workflow.
-# The workflow is triggered on push and pull request events targeting the main branch.
-name: My Workflow
+name: Build and Push Docker Image to ACR
 
 on:
   push:
     branches:
       - main
-    paths:
-      - '.github/workflows/jobs.yml'
-  pull_request:
-    branches:
-      - main
-    paths:
-      - '.github/workflows/jobs.yml'
-  workflow_dispatch:
 
 jobs:
-    # Job 1 runs first
-    job1:
-        runs-on: ubuntu-latest
-        steps:
-        # Step to checkout the code from the repository
-        - name: Checkout code
-          uses: actions/checkout@v2
-        # Step to run a simple script
-        - name: Run a script
-          run: echo "Hello, world!"
-    # Job 2 depends on the successful completion of Job 1
-    job2:
-        runs-on: ubuntu-latest
-        needs: job1
-        steps:
-        # Step to checkout the code from the repository
-        - name: Checkout code
-          uses: actions/checkout@v2
-        # Step to run another simple script
-        - name: Run another script
-          run: echo "Hello, again!"
+  build-and-push:
+    environment: action-environment
+    runs-on: ubuntu-latest
+
+    steps:
+    # Checkout the repository
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    # Log in to Azure
+    - name: Log in to Azure CLI
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+    # List files in the current directory
+    - name: List files
+      run: ls -la
+
+    # Build Docker image
+    - name: Build Docker image
+      env: 
+        LOGIN_SERVER: ${{ vars.LOGIN_SERVER }}
+      run: |
+        docker buildx build . -t $LOGIN_SERVER/my-app:latest
+
+    # Log in to Azure Container Registry
+    - name: Log in to Azure Container Registry
+      env:
+        REGISTRY_NAME: ${{ vars.REGISTRY_NAME }}
+      run: |
+        az acr login --name $REGISTRY_NAME
+
+    # Push Docker image to Azure Container Registry
+    - name: Push Docker image
+      env:
+        LOGIN_SERVER: ${{ vars.LOGIN_SERVER }}
+      run: |
+        docker push $LOGIN_SERVER/my-app:latest
